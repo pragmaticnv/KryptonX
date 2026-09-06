@@ -67,7 +67,7 @@
   border: 1px solid #1A374F !important;
   border-radius: 6px !important;
   padding: 10px 14px !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(25, 199, 216, 0.15) !important;
 }
 
 .maplibregl-popup-anchor-top .maplibregl-popup-tip {
@@ -85,4 +85,33 @@
 .maplibregl-popup-close-button {
   color: #8EA6B6 !important;
   padding: 4px 8px !important;
+  font-size: 16px !important;
+}
+.maplibregl-popup-close-button:hover {
+  color: #19C7D8 !important;
+  background: transparent !important;
+}
+
+/* Tactical Map Radar Pulses */
+@keyframes radarPing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scale(2.4);
+    opacity: 0.05;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.radar-ring {
+  animation: radarPing 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.radar-ring-fast {
+  animation: radarPing 1.3s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
