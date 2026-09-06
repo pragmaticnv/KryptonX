@@ -115,3 +115,32 @@
 .radar-ring-fast {
   animation: radarPing 1.3s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
+
+/* MapLibre Dark Navigation Control Bar */
+.maplibregl-ctrl-group {
+  background: rgba(14, 36, 56, 0.95) !important;
+  border: 1px solid #1A374F !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7) !important;
+  overflow: hidden;
+}
+
+.maplibregl-ctrl-group button {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #1A374F !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.maplibregl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background-color: #163854 !important;
+}
+
+.maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.85) !important;
+}
