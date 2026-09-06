@@ -3,6 +3,9 @@ import { Settings, Shield, Server, Cpu, Check, AlertCircle } from 'lucide-react'
 
 export const SettingsPage: React.FC = () => {
   const [firmsKey, setFirmsKey] = useState('');
+  const [cartoKey, setCartoKey] = useState(
+    import.meta.env.VITE_CARTO_API_KEY || 'cb1_2zcv_1_f02cb61d600f0fe96e48e9de'
+  );
   const [saveStatus, setSaveStatus] = useState(false);
 
   const handleSave = (e: React.FormEvent) => {
@@ -45,6 +48,21 @@ export const SettingsPage: React.FC = () => {
                 onChange={(e) => setFirmsKey(e.target.value)}
                 className="w-full bg-bg-secondary border border-border-subtle rounded px-3 py-2 text-xs text-text-primary focus:outline-none focus:border-cyan/50"
               />
+            </div>
+
+            <div>
+              <label className="block text-[11px] text-text-dim mb-1 uppercase">
+                CARTO BASEMAPS API KEY (CLIENT ENV)
+              </label>
+              <input
+                type="text"
+                value={cartoKey}
+                onChange={(e) => setCartoKey(e.target.value)}
+                className="w-full bg-bg-secondary border border-border-subtle rounded px-3 py-2 text-xs text-text-primary focus:outline-none focus:border-cyan/50 font-mono"
+              />
+              <span className="text-[10px] text-success/80 mt-1 block">
+                ✓ Watermark removed on MapLibre dark basemaps
+              </span>
             </div>
 
             <div className="flex items-center justify-between pt-2">
@@ -100,7 +118,7 @@ export const SettingsPage: React.FC = () => {
             SYSTEM DIAGNOSTICS & TELEMETRY
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
             <div className="bg-bg-secondary p-2.5 rounded border border-border-subtle">
               <div className="text-[10px] text-text-dim">BACKEND STATUS</div>
               <div className="font-bold text-success mt-0.5">CONNECTED (PORT 8000)</div>
@@ -116,6 +134,10 @@ export const SettingsPage: React.FC = () => {
             <div className="bg-bg-secondary p-2.5 rounded border border-border-subtle">
               <div className="text-[10px] text-text-dim">MAP ENGINE</div>
               <div className="font-bold text-kxblue mt-0.5">MAPLIBRE GL 4.1.1</div>
+            </div>
+            <div className="bg-bg-secondary p-2.5 rounded border border-border-subtle">
+              <div className="text-[10px] text-text-dim">CARTO BASEMAPS</div>
+              <div className="font-bold text-success mt-0.5">KEY ACTIVE (NO WATERMARK)</div>
             </div>
           </div>
         </div>

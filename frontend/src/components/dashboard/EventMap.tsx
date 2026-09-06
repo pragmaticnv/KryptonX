@@ -24,15 +24,20 @@ export const EventMap: React.FC<EventMapProps> = ({
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    // Dark Map Style with fallback
+    // Dark Map Style with CARTO Basemaps API key
+    const CARTO_API_KEY = import.meta.env.VITE_CARTO_API_KEY || 'cb1_2zcv_1_f02cb61d600f0fe96e48e9de';
+    const keyParam = CARTO_API_KEY ? `?key=${CARTO_API_KEY}` : '';
+
     const styleUrl = {
       version: 8 as const,
       sources: {
         'carto-dark': {
           type: 'raster' as const,
           tiles: [
-            'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
-            'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png',
+            `https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png${keyParam}`,
+            `https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png${keyParam}`,
+            `https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png${keyParam}`,
+            `https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png${keyParam}`,
           ],
           tileSize: 256,
           attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
