@@ -1,0 +1,17 @@
+# KryptonX environment
+NASA_FIRMS_MAP_KEY=
+FIRMS_SENSOR=VIIRS_SNPP_NRT
+FIRMS_DAYS=1
+
+# Backend
+API_PORT=8000
+CORS_ORIGINS=http://localhost:5173
+
+# Database (optional for rapid prototype)
+DATABASE_URL=postgresql://kryptonx:kryptonx@localhost:5432/kryptonx
+
+# OSM / Overpass
+OVERPASS_URL=https://overpass-api.de/api/interpreter
+
+# Prototype
+DEMO_MODE=true

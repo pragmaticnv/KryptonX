@@ -1,0 +1,26 @@
+{
+  "project": "KryptonX",
+  "ps": "SIH26162",
+  "purpose": "6-hour rapid prototype build",
+  "files": [
+    "README_FIRST.md",
+    "01_PRD.md",
+    "02_UI_SPEC.md",
+    "03_ARCHITECTURE.md",
+    "04_API_CONTRACT.md",
+    "05_seed_data.json",
+    "06_DEMO_SCRIPT.md",
+    "07_ENV.example",
+    "08_ANTIGRAVITY_MASTER_PROMPT.md",
+    "09_ACCEPTANCE_CHECKLIST.md",
+    "10_SOURCE_NOTES.md"
+  ],
+  "entrypoint": "08_ANTIGRAVITY_MASTER_PROMPT.md",
+  "source_of_truth": [
+    "01_PRD.md",
+    "02_UI_SPEC.md",
+    "03_ARCHITECTURE.md",
+    "04_API_CONTRACT.md",
+    "05_seed_data.json"
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "mode": "DEMO_DATA",
+  "note": "Synthetic prototype records. Do not present these values as live observations or validated model performance.",
+  "events": [
+    {
+      "id": "EVT-1048",
+      "lat": 22.47,
+      "lon": 70.07,
+      "first_seen": "2026-09-06T16:20:00Z",
+      "last_seen": "2026-09-06T21:35:00Z",
+      "peak_frp": 48.2,
+      "mean_frp": 31.4,
+      "persistence_hours": 5.25,
+      "observation_count": 9,
+      "probable_source": "Industrial Fire Candidate",
+      "confidence": 0.91,
+      "baseline_frp": 13.0,
+      "anomaly_ratio": 3.71,
+      "anomaly_score": 87,
+      "exposure_score": 76,
+      "industrial_relevance": 94,
+      "priority_score": 91,
+      "priority_level": "CRITICAL",
+      "nearest_facility": "Demo Industrial Facility",
+      "facility_type": "Industrial Complex",
+      "facility_distance_km": 0.8,
+      "land_cover": "Built-up / Industrial",
+      "status": "REVIEW",
+      "evidence": [
+        "3.7\u00d7 above historical baseline",
+        "FRP rising across recent observations",
+        "0.8 km from industrial facility",
+        "Persistent activity over 5.25 hours"
+      ],
+      "timeline": [
+        {
+          "time": "2026-09-06T16:20:00Z",
+          "frp": 18.1
+        },
+        {
+          "time": "2026-09-06T17:05:00Z",
+          "frp": 21.6
+        },
+        {
+          "time": "2026-09-06T18:00:00Z",
+          "frp": 25.4
+        },
+        {
+          "time": "2026-09-06T19:10:00Z",
+          "frp": 31.0
+        },
+        {
+          "time": "2026-09-06T20:20:00Z",
+          "frp": 39.7
+        },
+        {
+          "time": "2026-09-06T21:35:00Z",
+          "frp": 48.2
+        }
+      ]
+    },
+    {
+      "id": "EVT-0921",
+      "lat": 23.02,
+      "lon": 72.54,
+      "first_seen": "2026-09-06T10:15:00Z",
+      "last_seen": "2026-09-06T20:15:00Z",
+      "peak_frp": 19.8,
+      "mean_frp": 16.9,
+      "persistence_hours": 10.0,
+      "observation_count": 14,
+      "probable_source": "Persistent Industrial Thermal Source",
+      "confidence": 0.88,
+      "baseline_frp": 18.2,
+      "anomaly_ratio": 1.09,
+      "anomaly_score": 18,
+      "exposure_score": 58,
+      "industrial_relevance": 91,
+      "priority_score": 42,
+      "priority_level": "MODERATE",
+      "nearest_facility": "Demo Processing Facility",
+      "facility_type": "Industrial Facility",
+      "facility_distance_km": 0.4,
+      "land_cover": "Built-up / Industrial",
+      "status": "MONITOR",
+      "evidence": [
+        "FRP remains close to historical baseline",
+        "Repeated thermal observations at same location",
+        "0.4 km from industrial facility"
+      ],
+      "timeline": [
+        {
+          "time": "2026-09-06T10:15:00Z",
+          "frp": 17.8
+        },
+        {
+          "time": "2026-09-06T13:00:00Z",
+          "frp": 18.4
+        },
+        {
+          "time": "2026-09-06T16:30:00Z",
+          "frp": 17.2
+        },
+        {
+          "time": "2026-09-06T20:15:00Z",
+          "frp": 19.8
+        }
+      ]
+    },
+    {
+      "id": "EVT-1182",
+      "lat": 21.14,
+      "lon": 79.08,
+      "first_seen": "2026-09-06T13:40:00Z",
+      "last_seen": "2026-09-06T15:05:00Z",
+      "peak_frp": 22.6,
+      "mean_frp": 15.2,
+      "persistence_hours": 1.42,
+      "observation_count": 5,
+      "probable_source": "Agricultural Burning Candidate",
+      "confidence": 0.79,
+      "baseline_frp": 14.7,
+      "anomaly_ratio": 1.54,
+      "anomaly_score": 39,
+      "exposure_score": 29,
+      "industrial_relevance": 12,
+      "priority_score": 27,
+      "priority_level": "MODERATE",
+      "nearest_facility": "No relevant industrial facility",
+      "facility_type": "None",
+      "facility_distance_km": 8.6,
+      "land_cover": "Agricultural",
+      "status": "REVIEW",
+      "evidence": [
+        "Short persistence",
+        "Agricultural land-cover context",
+        "No nearby industrial facility"
+      ],
+      "timeline": [
+        {
+          "time": "2026-09-06T13:40:00Z",
+          "frp": 10.5
+        },
+        {
+          "time": "2026-09-06T14:10:00Z",
+          "frp": 17.2
+        },
+        {
+          "time": "2026-09-06T15:05:00Z",
+          "frp": 22.6
+        }
+      ]
+    }
+  ]
+}

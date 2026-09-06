@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+  
+  body {
+    background-color: #071521;
+    color: #EAF4F7;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+/* Custom Scrollbar for Intelligence Console */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B1F33;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1A374F;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2A557A;
+}
+
+/* Intelligence Console Utilities */
+.panel-border {
+  border: 1px solid #1A374F;
+}
+
+.panel-header {
+  background: linear-gradient(180deg, rgba(14, 36, 56, 0.95) 0%, rgba(11, 31, 51, 0.95) 100%);
+  border-bottom: 1px solid #1A374F;
+}
+
+.glow-cyan {
+  box-shadow: 0 0 15px rgba(25, 199, 216, 0.2);
+}
+
+.glow-critical {
+  animation: glowCritical 2s infinite alternate;
+}
+
+@keyframes glowCritical {
+  from {
+    box-shadow: 0 0 4px rgba(255, 77, 77, 0.4);
+  }
+  to {
+    box-shadow: 0 0 18px rgba(255, 77, 77, 0.8), 0 0 35px rgba(255, 77, 77, 0.35);
+  }
+}
+
+/* MapLibre dark custom overrides */
+.maplibregl-popup-content {
+  background: #0E2438 !important;
+  color: #EAF4F7 !important;
+  border: 1px solid #1A374F !important;
+  border-radius: 6px !important;
+  padding: 10px 14px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: #0E2438 !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: #0E2438 !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: #0E2438 !important;
+}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: #0E2438 !important;
+}
+.maplibregl-popup-close-button {
+  color: #8EA6B6 !important;
+  padding: 4px 8px !important;
+}
