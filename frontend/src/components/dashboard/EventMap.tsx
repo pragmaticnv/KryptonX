@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import maplibregl from 'maplibre-gl';
-import { Maximize2, RotateCcw, Factory, Flame, Radio, ShieldAlert } from 'lucide-react';
+import { 
+  Maximize2, RotateCcw, Factory, Flame, Radio, ShieldAlert,
+  ChevronLeft, Sliders, ChevronDown, ChevronUp, Sparkles, Layers
+} from 'lucide-react';
 import { EventSummary } from '../../types/event';
 import { getThermalObservationsGeoJson } from '../../data/thermalObservations';
-import { getFacilitiesGeoJson, getContextualLinkGeoJson } from '../../data/facilitiesData';
+import { DEMO_FACILITIES, getFacilitiesGeoJson, getContextualLinkGeoJson } from '../../data/facilitiesData';
 
 interface EventMapProps {
   events: EventSummary[];
@@ -34,6 +37,15 @@ export const EventMap: React.FC<EventMapProps> = ({
   const [showObservations, setShowObservations] = useState(true);
   const [showFacilities, setShowFacilities] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
+
+  // HUD Minimization & Collapsible Section State
+  const [isHudMinimized, setIsHudMinimized] = useState(false);
+  const [theaterOpen, setTheaterOpen] = useState(true);
+  const [layersOpen, setLayersOpen] = useState(true);
+  const [telemetryOpen, setTelemetryOpen] = useState(true);
+
+  // Find currently selected event object
+  const selectedEvent = events.find((e) => e.id === selectedEventId) || null;
 
   // ─── Initialize MapLibre Centered on India ───
   useEffect(() => {
@@ -108,7 +120,6 @@ export const EventMap: React.FC<EventMapProps> = ({
         source: 'thermal-observations-source',
         maxzoom: 13,
         paint: {
-          // Weight calculation based on Fire Radiative Power (MW)
           'heatmap-weight': [
             'interpolate',
             ['linear'],
@@ -118,7 +129,6 @@ export const EventMap: React.FC<EventMapProps> = ({
             40, 0.85,
             50, 1.0
           ],
-          // Smooth progressive intensity with zoom
           'heatmap-intensity': [
             'interpolate',
             ['linear'],
@@ -128,7 +138,6 @@ export const EventMap: React.FC<EventMapProps> = ({
             7, 1.4,
             10, 2.2
           ],
-          // Satellite thermal intensity color spectrum
           'heatmap-color': [
             'interpolate',
             ['linear'],
@@ -140,7 +149,6 @@ export const EventMap: React.FC<EventMapProps> = ({
             0.75, 'rgba(255, 120, 0, 0.9)',    // Orange (high heat density)
             0.95, 'rgba(255, 45, 45, 0.96)'    // Crimson Red (critical anomaly)
           ],
-          // Realistic organic radius
           'heatmap-radius': [
             'interpolate',
             ['linear'],
@@ -371,7 +379,7 @@ export const EventMap: React.FC<EventMapProps> = ({
       let markerColor = '#19C7D8'; // Low (Cyan)
       if (isCritical) markerColor = '#FF4D4D'; // Critical (Crimson Red)
       else if (isHigh) markerColor = '#FF9F1C'; // High (Vivid Orange)
-      else if (isModerate) markerColor = '#4DA3FF'; // Moderate (Electric Blue/Amber)
+      else if (isModerate) markerColor = '#4DA3FF'; // Moderate (Electric Blue)
 
       // Dim non-selected events slightly if an event is currently selected
       const opacity = selectedEventId && !isSelected ? '0.4' : '1.0';
@@ -382,7 +390,6 @@ export const EventMap: React.FC<EventMapProps> = ({
       el.style.zIndex = isSelected ? '50' : isCritical ? '40' : '30';
 
       // Smart label positioning: offset EVT-1048 left, EVT-0921 right so they NEVER overlap in Gujarat
-      let labelAlignment = 'items-center';
       let labelOffset = '';
       if (event.id === 'EVT-1048') {
         labelOffset = 'transform: translateX(-40px);';
@@ -391,7 +398,7 @@ export const EventMap: React.FC<EventMapProps> = ({
       }
 
       el.innerHTML = `
-        <div style="position: relative; display: flex; flex-direction: column; ${labelAlignment};">
+        <div style="position: relative; display: flex; flex-direction: column; items-center;">
           <!-- Compact Event ID Label -->
           <div style="
             background: rgba(14, 36, 56, 0.95);
@@ -538,55 +545,29 @@ export const EventMap: React.FC<EventMapProps> = ({
     const selected = events.find((e) => e.id === selectedEventId);
     if (!selected) return;
 
-    if (selectedEventId === 'EVT-1048') {
-      // Connect EVT-1048 to Reliance Jamnagar Petrochem (0.8 km)
-      const eventCoord: [number, number] = [70.070, 22.470];
-      const facCoord: [number, number] = [70.076, 22.474];
-
-      if (linkSource) {
-        linkSource.setData(getContextualLinkGeoJson(eventCoord, facCoord, {
-          name: 'Proximity Fusion Link',
-          distance: '0.8 km',
-        }));
-      }
-
-      m.flyTo({
-        center: [70.073, 22.472],
-        zoom: 13.0,
-        pitch: 35,
-        speed: 1.2,
-        curve: 1.4,
-        essential: true,
-      });
-    } else if (selectedEventId === 'EVT-0921') {
-      const eventCoord: [number, number] = [72.540, 23.020];
-      const facCoord: [number, number] = [72.543, 23.023];
-
-      if (linkSource) {
-        linkSource.setData(getContextualLinkGeoJson(eventCoord, facCoord, {
-          name: 'Proximity Fusion Link',
-          distance: '0.4 km',
-        }));
-      }
-
-      m.flyTo({
-        center: [72.542, 23.021],
-        zoom: 13.2,
-        pitch: 25,
-        speed: 1.2,
-        essential: true,
-      });
-    } else {
-      if (linkSource) {
-        linkSource.setData({ type: 'FeatureCollection', features: [] });
-      }
-      m.flyTo({
-        center: [selected.lon, selected.lat],
-        zoom: 11.5,
-        speed: 1.2,
-        essential: true,
-      });
+    // Dynamically look up associated facility
+    const associatedFacility = DEMO_FACILITIES.find(f => f.associatedEventId === selectedEventId);
+    if (associatedFacility && linkSource) {
+      linkSource.setData(getContextualLinkGeoJson(
+        [selected.lon, selected.lat],
+        [associatedFacility.lon, associatedFacility.lat],
+        {
+          name: `${selected.id} Proximity Fusion Link`,
+          distance: `${selected.facility_distance_km} km`,
+        }
+      ));
+    } else if (linkSource) {
+      linkSource.setData({ type: 'FeatureCollection', features: [] });
     }
+
+    m.flyTo({
+      center: [selected.lon, selected.lat],
+      zoom: selected.facility_distance_km > 5 ? 10.5 : 12.8,
+      pitch: 32,
+      speed: 1.2,
+      curve: 1.4,
+      essential: true,
+    });
   }, [selectedEventId, mapLoaded, events]);
 
   // ─── Fit Monitored Events ───
@@ -612,140 +593,240 @@ export const EventMap: React.FC<EventMapProps> = ({
       {/* MapLibre Canvas Container */}
       <div ref={mapContainer} className="w-full h-full" />
 
-      {/* ─── Top-Left: Sleek Unified Operations & Theater Bar ─── */}
-      <div className="absolute top-3.5 left-4 flex items-center gap-2 z-10 select-none">
-        <div className="bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md px-3 py-1.5 flex items-center gap-2.5 shadow-2xl">
-          <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-          <span className="text-[11px] font-bold text-text-primary tracking-wider uppercase">
-            INDIA THEATER
-          </span>
-          <span className="text-[9px] text-cyan font-bold bg-cyan/15 px-1.5 py-0.2 rounded border border-cyan/30">
-            DEMO GRID
-          </span>
-
-          <div className="h-3 w-[1px] bg-border-subtle mx-1" />
-
-          {/* Quick Theater View Controls */}
-          <button
-            onClick={handleResetView}
-            title="Reset Map to Full India View"
-            className="px-2 py-1 rounded text-[11px] text-text-muted hover:text-cyan hover:bg-bg-hover transition-colors flex items-center gap-1 font-bold group"
-          >
-            <RotateCcw className="w-3 h-3 group-hover:rotate-[-45deg] transition-transform" />
-            <span>Reset (India)</span>
-          </button>
-          <button
-            onClick={handleFitEvents}
-            title="Fit All Monitored Events"
-            className="px-2 py-1 rounded text-[11px] text-text-muted hover:text-cyan hover:bg-bg-hover transition-colors flex items-center gap-1 font-bold"
-          >
-            <Maximize2 className="w-3 h-3" />
-            <span>Fit Events</span>
-          </button>
-        </div>
-      </div>
-
-      {/* ─── Top-Right: Horizontal Intelligence Layer Toggles ─── */}
-      <div className="absolute top-3.5 right-4 flex items-center gap-1.5 z-10 select-none">
-        <div className="bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md p-1 flex items-center gap-1 shadow-2xl">
-          {/* Thermal Heatmap Toggle */}
-          <button
-            onClick={() => setShowHeatmap(!showHeatmap)}
-            title="Toggle Satellite Thermal Heatmap"
-            className={`px-2.5 py-1 rounded text-[11px] font-bold transition-colors flex items-center gap-1.5 ${
-              showHeatmap
-                ? 'bg-warning/20 text-warning border border-warning/40'
-                : 'text-text-muted hover:bg-bg-hover border border-transparent'
-            }`}
-          >
-            <Flame className="w-3.5 h-3.5" />
-            <span>Heatmap</span>
-          </button>
-
-          {/* Observation Points Toggle */}
-          <button
-            onClick={() => setShowObservations(!showObservations)}
-            title="Toggle Sensor Observation Points"
-            className={`px-2.5 py-1 rounded text-[11px] font-bold transition-colors flex items-center gap-1.5 ${
-              showObservations
-                ? 'bg-cyan/20 text-cyan border border-cyan/40'
-                : 'text-text-muted hover:bg-bg-hover border border-transparent'
-            }`}
-          >
-            <Radio className="w-3.5 h-3.5" />
-            <span>Sensors</span>
-          </button>
-
-          {/* OSM Facilities Toggle */}
-          <button
-            onClick={() => setShowFacilities(!showFacilities)}
-            title="Toggle Industrial Facilities"
-            className={`px-2.5 py-1 rounded text-[11px] font-bold transition-colors flex items-center gap-1.5 ${
-              showFacilities
-                ? 'bg-kxblue/20 text-kxblue border border-kxblue/40'
-                : 'text-text-muted hover:bg-bg-hover border border-transparent'
-            }`}
-          >
-            <Factory className="w-3.5 h-3.5" />
-            <span>Facilities</span>
-          </button>
-        </div>
-      </div>
-
-      {/* ─── Center-Top: Contextual Fusion Risk Alert (When EVT-1048 Selected) ─── */}
-      {selectedEventId === 'EVT-1048' && (
-        <div className="absolute top-14 left-1/2 -translate-x-1/2 bg-bg-panel/95 backdrop-blur border border-critical/70 rounded-md px-3.5 py-1.5 z-10 shadow-2xl flex items-center gap-2.5 animate-fade-in select-none">
-          <ShieldAlert className="w-4 h-4 text-critical animate-pulse" />
-          <div className="text-[11px] font-bold text-text-primary flex items-center gap-2">
-            <span className="text-critical uppercase">CONTEXTUAL FUSION MATCH:</span>
-            <span>EVT-1048 ╌╌ 0.8 km ╌╌ Reliance Jamnagar Petrochemical Complex</span>
-            <span className="text-[9px] bg-critical text-white px-1.5 py-0.5 rounded font-bold uppercase">HIGH RISK</span>
+      {/* ─── Center-Top: Contextual Fusion Risk Alert Banner (When Any Event is Selected) ─── */}
+      {selectedEvent && (
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-bg-panel/95 backdrop-blur border border-critical/70 rounded-md px-3.5 py-1.5 z-10 shadow-2xl flex items-center gap-2.5 animate-fade-in select-none max-w-[85%]">
+          <ShieldAlert className="w-4 h-4 text-critical animate-pulse shrink-0" />
+          <div className="text-[11px] font-bold text-text-primary flex items-center gap-2 overflow-hidden">
+            <span className="text-critical uppercase shrink-0">CONTEXTUAL FUSION:</span>
+            <span className="truncate">{selectedEvent.id} ╌╌ {selectedEvent.facility_distance_km} km ╌╌ {selectedEvent.nearest_facility}</span>
+            <span className={`text-[9px] text-white px-1.5 py-0.5 rounded font-bold uppercase shrink-0 ${
+              selectedEvent.priority_level === 'CRITICAL' ? 'bg-critical' : selectedEvent.priority_level === 'HIGH' ? 'bg-warning' : 'bg-kxblue'
+            }`}>
+              {selectedEvent.priority_level}
+            </span>
           </div>
         </div>
       )}
 
-      {/* ─── Bottom-Left: Slim, Non-Obstructive Intelligence Legend ─── */}
-      <div className="absolute bottom-4 left-4 bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md px-3 py-2 z-10 select-none shadow-2xl flex flex-wrap items-center gap-x-3.5 gap-y-1.5 text-[10px]">
-        {/* Thermal Density Gradient Bar */}
-        <div className="flex items-center gap-2">
-          <span className="text-text-muted uppercase font-bold text-[9px] tracking-wider">THERMAL (MW):</span>
-          <div className="w-20 h-2 rounded-sm bg-gradient-to-r from-cyan/50 via-warning to-critical" />
-          <span className="text-[9px] text-text-dim">&lt;15 → &gt;45</span>
+      {/* ─── Top-Left: Tactical HUD with Minimize / Expand Button ─── */}
+      {isHudMinimized ? (
+        /* Minimized State: Sleek Floating Button */
+        <div className="absolute top-3.5 left-4 z-20 select-none animate-fade-in">
+          <button
+            onClick={() => setIsHudMinimized(false)}
+            className="bg-bg-panel/95 backdrop-blur border border-cyan/60 hover:border-cyan text-text-primary px-3 py-1.5 rounded-md shadow-2xl flex items-center gap-2 text-[11px] font-bold transition-all hover:bg-bg-hover group"
+            title="Expand Tactical HUD Controls"
+          >
+            <span className="w-2 h-2 rounded-full bg-cyan animate-pulse" />
+            <Sliders className="w-3.5 h-3.5 text-cyan group-hover:rotate-45 transition-transform" />
+            <span>TACTICAL HUD</span>
+            <span className="text-[9px] bg-cyan/20 text-cyan px-1.5 py-0.5 rounded font-mono border border-cyan/40">
+              EXPAND +
+            </span>
+          </button>
         </div>
+      ) : (
+        /* Expanded State: Full Tactical Console */
+        <div className="absolute top-3.5 left-4 z-20 select-none flex flex-col gap-2 max-w-[310px] animate-fade-in">
+          {/* Master HUD Header with Minimize Button */}
+          <div className="bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md px-3 py-2 shadow-2xl flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+              <span className="text-[11px] font-bold text-text-primary tracking-wider uppercase">
+                INDIA THEATER HUD
+              </span>
+              <span className="text-[9px] text-cyan font-bold bg-cyan/15 px-1 py-0.2 rounded border border-cyan/30">
+                DEMO
+              </span>
+            </div>
 
-        <div className="h-3 w-[1px] bg-border-subtle" />
+            {/* MINIMISE BUTTON */}
+            <button
+              onClick={() => setIsHudMinimized(true)}
+              className="px-2 py-0.5 rounded text-[10px] bg-bg-main border border-border-subtle hover:bg-critical/20 hover:border-critical/50 text-text-muted hover:text-critical font-bold transition-all flex items-center gap-1 group"
+              title="Minimize HUD to see full map"
+            >
+              <ChevronLeft className="w-3 h-3 group-hover:-translate-x-0.5 transition-transform" />
+              <span>MINIMIZE</span>
+            </button>
+          </div>
 
-        {/* Priority Target Classes */}
-        <div className="flex items-center gap-2.5">
-          <span className="text-text-muted uppercase font-bold text-[9px] tracking-wider">TARGETS:</span>
-          <div className="flex items-center gap-1 text-critical font-bold">
-            <span className="w-2 h-2 rounded-full bg-critical animate-pulse shadow-[0_0_6px_#FF4D4D]" />
-            <span>Critical</span>
+          {/* Section 1: Theater Views */}
+          <div className="bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md p-2.5 shadow-2xl space-y-1.5">
+            <div 
+              onClick={() => setTheaterOpen(!theaterOpen)}
+              className="flex items-center justify-between text-[10px] font-bold text-text-muted uppercase tracking-wider cursor-pointer hover:text-cyan transition-colors"
+            >
+              <span className="flex items-center gap-1.5">
+                <Maximize2 className="w-3 h-3 text-cyan" />
+                <span>Theater Views</span>
+              </span>
+              {theaterOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+            </div>
+
+            {theaterOpen && (
+              <div className="grid grid-cols-2 gap-1.5 pt-1">
+                <button
+                  onClick={handleResetView}
+                  title="Reset Map to Full India View"
+                  className="px-2 py-1.5 rounded text-[10px] text-text-muted hover:text-cyan bg-bg-main hover:bg-bg-hover border border-border-subtle transition-colors flex items-center justify-center gap-1 font-bold group"
+                >
+                  <RotateCcw className="w-3 h-3 group-hover:rotate-[-45deg] transition-transform" />
+                  <span>Reset (India)</span>
+                </button>
+                <button
+                  onClick={handleFitEvents}
+                  title="Fit All Monitored Events"
+                  className="px-2 py-1.5 rounded text-[10px] text-text-muted hover:text-cyan bg-bg-main hover:bg-bg-hover border border-border-subtle transition-colors flex items-center justify-center gap-1 font-bold"
+                >
+                  <Maximize2 className="w-3 h-3" />
+                  <span>Fit Events</span>
+                </button>
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-1 text-warning font-bold">
-            <span className="w-2 h-2 rounded-full bg-warning" />
-            <span>High</span>
+
+          {/* Section 2: Intelligence Layers */}
+          <div className="bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md p-2.5 shadow-2xl space-y-1.5">
+            <div 
+              onClick={() => setLayersOpen(!layersOpen)}
+              className="flex items-center justify-between text-[10px] font-bold text-text-muted uppercase tracking-wider cursor-pointer hover:text-cyan transition-colors"
+            >
+              <span className="flex items-center gap-1.5">
+                <Layers className="w-3 h-3 text-warning" />
+                <span>Intelligence Layers</span>
+              </span>
+              {layersOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+            </div>
+
+            {layersOpen && (
+              <div className="space-y-1 pt-1">
+                {/* Heatmap Toggle */}
+                <button
+                  onClick={() => setShowHeatmap(!showHeatmap)}
+                  className={`w-full flex items-center justify-between px-2 py-1 rounded text-[11px] font-bold transition-colors ${
+                    showHeatmap
+                      ? 'bg-warning/20 text-warning border border-warning/40'
+                      : 'text-text-muted bg-bg-main hover:bg-bg-hover border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>Thermal Heatmap</span>
+                  </div>
+                  <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${showHeatmap ? 'bg-warning text-bg-main' : 'text-text-dim'}`}>
+                    {showHeatmap ? 'ON' : 'OFF'}
+                  </span>
+                </button>
+
+                {/* Sensor Points Toggle */}
+                <button
+                  onClick={() => setShowObservations(!showObservations)}
+                  className={`w-full flex items-center justify-between px-2 py-1 rounded text-[11px] font-bold transition-colors ${
+                    showObservations
+                      ? 'bg-cyan/20 text-cyan border border-cyan/40'
+                      : 'text-text-muted bg-bg-main hover:bg-bg-hover border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Radio className="w-3.5 h-3.5" />
+                    <span>Sensor Points</span>
+                  </div>
+                  <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${showObservations ? 'bg-cyan text-bg-main' : 'text-text-dim'}`}>
+                    {showObservations ? 'ON' : 'OFF'}
+                  </span>
+                </button>
+
+                {/* OSM Facilities Toggle */}
+                <button
+                  onClick={() => setShowFacilities(!showFacilities)}
+                  className={`w-full flex items-center justify-between px-2 py-1 rounded text-[11px] font-bold transition-colors ${
+                    showFacilities
+                      ? 'bg-kxblue/20 text-kxblue border border-kxblue/40'
+                      : 'text-text-muted bg-bg-main hover:bg-bg-hover border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Factory className="w-3.5 h-3.5" />
+                    <span>OSM Facilities</span>
+                  </div>
+                  <span className={`text-[9px] px-1 py-0.2 rounded font-mono ${showFacilities ? 'bg-kxblue text-bg-main' : 'text-text-dim'}`}>
+                    {showFacilities ? 'ON' : 'OFF'}
+                  </span>
+                </button>
+              </div>
+            )}
           </div>
-          <div className="flex items-center gap-1 text-kxblue font-bold">
-            <span className="w-2 h-2 rounded-full bg-kxblue" />
-            <span>Moderate</span>
+
+          {/* Section 3: Tactical Map Telemetry & Legend */}
+          <div className="bg-bg-panel/95 backdrop-blur border border-border-subtle rounded-md p-2.5 shadow-2xl space-y-2">
+            <div 
+              onClick={() => setTelemetryOpen(!telemetryOpen)}
+              className="flex items-center justify-between text-[10px] font-bold text-text-muted uppercase tracking-wider cursor-pointer hover:text-cyan transition-colors"
+            >
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-cyan" />
+                <span>Tactical Telemetry</span>
+              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-[9px] text-cyan font-bold bg-cyan/15 px-1 py-0.2 rounded">
+                  48 OBS
+                </span>
+                {telemetryOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+              </div>
+            </div>
+
+            {telemetryOpen && (
+              <div className="space-y-2 pt-1">
+                {/* FRP Intensity Bar */}
+                <div>
+                  <div className="flex items-center justify-between text-[9px] text-text-muted mb-1">
+                    <span className="font-bold">SATELLITE INTENSITY (MW)</span>
+                    <span className="text-text-dim">&lt;15 → &gt;45</span>
+                  </div>
+                  <div className="w-full h-2 rounded-sm bg-gradient-to-r from-cyan/50 via-warning to-critical" />
+                </div>
+
+                {/* Priority Badges */}
+                <div>
+                  <div className="text-[9px] text-text-muted font-bold mb-1">PRIORITY TARGETS</div>
+                  <div className="grid grid-cols-2 gap-1.5 text-[9.5px]">
+                    <div className="flex items-center gap-1 text-critical font-bold">
+                      <span className="w-2 h-2 rounded-full bg-critical animate-pulse shadow-[0_0_6px_#FF4D4D]" />
+                      <span>Critical</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-warning font-bold">
+                      <span className="w-2 h-2 rounded-full bg-warning" />
+                      <span>High Risk</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-kxblue font-bold">
+                      <span className="w-2 h-2 rounded-full bg-kxblue" />
+                      <span>Moderate</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-cyan font-bold">
+                      <span className="w-2 h-2 rounded-full bg-cyan" />
+                      <span>Low Priority</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Proximity Context Link Entity */}
+                <div className="border-t border-border-subtle/60 pt-1.5 flex items-center justify-between text-[9.5px] text-text-muted">
+                  <div className="flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full border border-cyan bg-[#0F2B48]" />
+                    <span>OSM Facility</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-critical text-[9px]">
+                    <span>╌╌</span>
+                    <span>Proximity Link</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-
-        <div className="h-3 w-[1px] bg-border-subtle" />
-
-        {/* Tactical Geospatial Context Entities */}
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1 text-text-muted">
-            <span className="w-2 h-2 rounded-full border border-cyan bg-[#0F2B48]" />
-            <span>OSM Facility</span>
-          </div>
-          <div className="flex items-center gap-1 text-critical text-[9px]">
-            <span>╌╌</span>
-            <span>0.8km Proximity Link</span>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

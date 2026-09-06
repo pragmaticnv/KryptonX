@@ -29,25 +29,9 @@ class SeedRepository:
         self._ensure_demo_events()
 
     def _ensure_demo_events(self):
-        # 1. Hero Event EVT-1048
-        if "EVT-1048" in self.events:
-            e = self.events["EVT-1048"]
-            e.setdefault("observation_count", 9)
-            e.setdefault("confidence", 0.91)
-            e.setdefault("status", "REVIEW")
-
-        # 2. Normal Persistent Event EVT-0921
-        if "EVT-0921" in self.events:
-            e = self.events["EVT-0921"]
-            e.setdefault("observation_count", 14)
-            e.setdefault("confidence", 0.88)
-            e.setdefault("status", "MONITOR")
-
-        # 3. Agricultural Event EVT-1182
-        if "EVT-1182" in self.events:
-            e = self.events["EVT-1182"]
-            e.setdefault("observation_count", 5)
-            e.setdefault("confidence", 0.79)
+        for e in self.events.values():
+            e.setdefault("observation_count", len(e.get("timeline", [])) or 6)
+            e.setdefault("confidence", 0.85)
             e.setdefault("status", "REVIEW")
 
     def get_events(

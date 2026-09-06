@@ -1,6 +1,6 @@
 {
   "mode": "DEMO_DATA",
-  "note": "Synthetic prototype records. Do not present these values as live observations or validated model performance.",
+  "note": "Synthetic prototype records for SIH26162. AI-based detection and classification of industrial fires and persistent thermal sources.",
   "events": [
     {
       "id": "EVT-1048",
@@ -21,42 +21,24 @@
       "industrial_relevance": 94,
       "priority_score": 91,
       "priority_level": "CRITICAL",
-      "nearest_facility": "Demo Industrial Facility",
-      "facility_type": "Industrial Complex",
+      "nearest_facility": "Reliance Jamnagar Complex & Petrochemicals",
+      "facility_type": "Petrochemical Refining Complex",
       "facility_distance_km": 0.8,
       "land_cover": "Built-up / Industrial",
       "status": "REVIEW",
       "evidence": [
-        "3.7\u00d7 above historical baseline",
-        "FRP rising across recent observations",
-        "0.8 km from industrial facility",
-        "Persistent activity over 5.25 hours"
+        "3.71× above historical baseline",
+        "FRP rising steadily across 6 satellite passes",
+        "0.8 km from primary petrochemical storage unit",
+        "Continuous elevated thermal signature for 5.25 hours"
       ],
       "timeline": [
-        {
-          "time": "2026-09-06T16:20:00Z",
-          "frp": 18.1
-        },
-        {
-          "time": "2026-09-06T17:05:00Z",
-          "frp": 21.6
-        },
-        {
-          "time": "2026-09-06T18:00:00Z",
-          "frp": 25.4
-        },
-        {
-          "time": "2026-09-06T19:10:00Z",
-          "frp": 31.0
-        },
-        {
-          "time": "2026-09-06T20:20:00Z",
-          "frp": 39.7
-        },
-        {
-          "time": "2026-09-06T21:35:00Z",
-          "frp": 48.2
-        }
+        { "time": "2026-09-06T16:20:00Z", "frp": 18.1 },
+        { "time": "2026-09-06T17:05:00Z", "frp": 21.6 },
+        { "time": "2026-09-06T18:00:00Z", "frp": 25.4 },
+        { "time": "2026-09-06T19:10:00Z", "frp": 31.0 },
+        { "time": "2026-09-06T20:20:00Z", "frp": 39.7 },
+        { "time": "2026-09-06T21:35:00Z", "frp": 48.2 }
       ]
     },
     {
@@ -78,33 +60,21 @@
       "industrial_relevance": 91,
       "priority_score": 42,
       "priority_level": "MODERATE",
-      "nearest_facility": "Demo Processing Facility",
+      "nearest_facility": "Vatva GIDC Chemical Processing Cluster",
       "facility_type": "Industrial Facility",
       "facility_distance_km": 0.4,
       "land_cover": "Built-up / Industrial",
       "status": "MONITOR",
       "evidence": [
-        "FRP remains close to historical baseline",
-        "Repeated thermal observations at same location",
-        "0.4 km from industrial facility"
+        "FRP closely tracks operational baseline (1.09×)",
+        "Persistent multi-month thermal signature",
+        "0.4 km from industrial chemical intermediate plant"
       ],
       "timeline": [
-        {
-          "time": "2026-09-06T10:15:00Z",
-          "frp": 17.8
-        },
-        {
-          "time": "2026-09-06T13:00:00Z",
-          "frp": 18.4
-        },
-        {
-          "time": "2026-09-06T16:30:00Z",
-          "frp": 17.2
-        },
-        {
-          "time": "2026-09-06T20:15:00Z",
-          "frp": 19.8
-        }
+        { "time": "2026-09-06T10:15:00Z", "frp": 17.8 },
+        { "time": "2026-09-06T13:00:00Z", "frp": 18.4 },
+        { "time": "2026-09-06T16:30:00Z", "frp": 17.2 },
+        { "time": "2026-09-06T20:15:00Z", "frp": 19.8 }
       ]
     },
     {
@@ -129,26 +99,197 @@
       "nearest_facility": "No relevant industrial facility",
       "facility_type": "None",
       "facility_distance_km": 8.6,
-      "land_cover": "Agricultural",
+      "land_cover": "Agricultural Cropland",
       "status": "REVIEW",
       "evidence": [
-        "Short persistence",
-        "Agricultural land-cover context",
-        "No nearby industrial facility"
+        "Short duration burning cycle (<1.5 hours)",
+        "ESA WorldCover classifies site as open cropland",
+        "8.6 km isolated from industrial infrastructure"
       ],
       "timeline": [
-        {
-          "time": "2026-09-06T13:40:00Z",
-          "frp": 10.5
-        },
-        {
-          "time": "2026-09-06T14:10:00Z",
-          "frp": 17.2
-        },
-        {
-          "time": "2026-09-06T15:05:00Z",
-          "frp": 22.6
-        }
+        { "time": "2026-09-06T13:40:00Z", "frp": 10.5 },
+        { "time": "2026-09-06T14:10:00Z", "frp": 17.2 },
+        { "time": "2026-09-06T15:05:00Z", "frp": 22.6 }
+      ]
+    },
+    {
+      "id": "EVT-3190",
+      "lat": 24.18,
+      "lon": 82.68,
+      "first_seen": "2026-09-06T14:15:00Z",
+      "last_seen": "2026-09-06T21:25:00Z",
+      "peak_frp": 56.4,
+      "mean_frp": 38.8,
+      "persistence_hours": 7.2,
+      "observation_count": 11,
+      "probable_source": "Industrial Fire Candidate",
+      "confidence": 0.94,
+      "baseline_frp": 16.5,
+      "anomaly_ratio": 3.42,
+      "anomaly_score": 89,
+      "exposure_score": 81,
+      "industrial_relevance": 96,
+      "priority_score": 93,
+      "priority_level": "CRITICAL",
+      "nearest_facility": "NTPC Singrauli Super Thermal Power Station",
+      "facility_type": "Coal-Fired Mega Power Station",
+      "facility_distance_km": 0.6,
+      "land_cover": "Industrial Energy Infrastructure",
+      "status": "ESCALATED",
+      "evidence": [
+        "3.42× spike above historical baseline",
+        "Concentrated intense emission in coal yard buffer zone",
+        "0.6 km from thermal generating unit",
+        "Rising FRP profile detected over 7.2 hours"
+      ],
+      "timeline": [
+        { "time": "2026-09-06T14:15:00Z", "frp": 22.1 },
+        { "time": "2026-09-06T16:00:00Z", "frp": 31.4 },
+        { "time": "2026-09-06T18:10:00Z", "frp": 44.0 },
+        { "time": "2026-09-06T19:50:00Z", "frp": 51.2 },
+        { "time": "2026-09-06T21:25:00Z", "frp": 56.4 }
+      ]
+    },
+    {
+      "id": "EVT-2041",
+      "lat": 17.65,
+      "lon": 83.18,
+      "first_seen": "2026-09-06T15:20:00Z",
+      "last_seen": "2026-09-06T20:00:00Z",
+      "peak_frp": 38.6,
+      "mean_frp": 27.3,
+      "persistence_hours": 4.67,
+      "observation_count": 8,
+      "probable_source": "Gas Flare Candidate",
+      "confidence": 0.87,
+      "baseline_frp": 14.2,
+      "anomaly_ratio": 2.72,
+      "anomaly_score": 74,
+      "exposure_score": 78,
+      "industrial_relevance": 93,
+      "priority_score": 84,
+      "priority_level": "HIGH",
+      "nearest_facility": "RINL Visakhapatnam Integrated Steel Plant",
+      "facility_type": "Metallurgical Works & Blast Furnace",
+      "facility_distance_km": 0.5,
+      "land_cover": "Heavy Industrial / Port",
+      "status": "REVIEW",
+      "evidence": [
+        "2.72× elevated blast furnace flare excursion",
+        "High thermal contrast over coastal steelworks",
+        "0.5 km from primary coking battery stack"
+      ],
+      "timeline": [
+        { "time": "2026-09-06T15:20:00Z", "frp": 18.5 },
+        { "time": "2026-09-06T17:15:00Z", "frp": 26.2 },
+        { "time": "2026-09-06T18:40:00Z", "frp": 34.0 },
+        { "time": "2026-09-06T20:00:00Z", "frp": 38.6 }
+      ]
+    },
+    {
+      "id": "EVT-1405",
+      "lat": 23.75,
+      "lon": 86.42,
+      "first_seen": "2026-09-06T06:30:00Z",
+      "last_seen": "2026-09-06T21:00:00Z",
+      "peak_frp": 35.2,
+      "mean_frp": 26.4,
+      "persistence_hours": 14.5,
+      "observation_count": 16,
+      "probable_source": "Industrial Fire Candidate",
+      "confidence": 0.89,
+      "baseline_frp": 15.0,
+      "anomaly_ratio": 2.35,
+      "anomaly_score": 68,
+      "exposure_score": 75,
+      "industrial_relevance": 88,
+      "priority_score": 79,
+      "priority_level": "HIGH",
+      "nearest_facility": "BCCL Coal Washery & Extraction Facility",
+      "facility_type": "Coal Processing Complex",
+      "facility_distance_km": 0.7,
+      "land_cover": "Open Cast Coal Mining Area",
+      "status": "MONITOR",
+      "evidence": [
+        "Continuous 14.5-hour subsurface combustion signature",
+        "2.35× baseline anomaly in Jharia coal belt",
+        "0.7 km from coal handling and conveyor network"
+      ],
+      "timeline": [
+        { "time": "2026-09-06T06:30:00Z", "frp": 22.0 },
+        { "time": "2026-09-06T11:45:00Z", "frp": 27.1 },
+        { "time": "2026-09-06T16:20:00Z", "frp": 31.8 },
+        { "time": "2026-09-06T21:00:00Z", "frp": 35.2 }
+      ]
+    },
+    {
+      "id": "EVT-2219",
+      "lat": 29.39,
+      "lon": 76.97,
+      "first_seen": "2026-09-06T17:50:00Z",
+      "last_seen": "2026-09-06T21:00:00Z",
+      "peak_frp": 28.4,
+      "mean_frp": 21.0,
+      "persistence_hours": 3.17,
+      "observation_count": 7,
+      "probable_source": "Gas Flare Candidate",
+      "confidence": 0.85,
+      "baseline_frp": 15.1,
+      "anomaly_ratio": 1.88,
+      "anomaly_score": 45,
+      "exposure_score": 67,
+      "industrial_relevance": 92,
+      "priority_score": 58,
+      "priority_level": "MODERATE",
+      "nearest_facility": "IOCL Panipat Mega Refinery & Naphtha Cracker",
+      "facility_type": "Refinery Flare Installation",
+      "facility_distance_km": 0.9,
+      "land_cover": "Petrochemical Infrastructure",
+      "status": "REVIEW",
+      "evidence": [
+        "1.88× baseline flaring excursion",
+        "Located 0.9 km from refinery process units",
+        "Thermal output stabilized after 3 hours"
+      ],
+      "timeline": [
+        { "time": "2026-09-06T17:50:00Z", "frp": 16.4 },
+        { "time": "2026-09-06T19:30:00Z", "frp": 28.4 },
+        { "time": "2026-09-06T21:00:00Z", "frp": 22.8 }
+      ]
+    },
+    {
+      "id": "EVT-0842",
+      "lat": 15.22,
+      "lon": 76.65,
+      "first_seen": "2026-09-06T12:00:00Z",
+      "last_seen": "2026-09-06T20:00:00Z",
+      "peak_frp": 14.8,
+      "mean_frp": 13.5,
+      "persistence_hours": 8.0,
+      "observation_count": 10,
+      "probable_source": "Persistent Industrial Thermal Source",
+      "confidence": 0.92,
+      "baseline_frp": 15.0,
+      "anomaly_ratio": 0.99,
+      "anomaly_score": 12,
+      "exposure_score": 38,
+      "industrial_relevance": 86,
+      "priority_score": 24,
+      "priority_level": "LOW",
+      "nearest_facility": "JSW Vijayanagar Integrated Steel Complex",
+      "facility_type": "Slag Disposal Yard",
+      "facility_distance_km": 0.4,
+      "land_cover": "Industrial Heavy Manufacturing",
+      "status": "MONITOR",
+      "evidence": [
+        "FRP precisely matches historical median (0.99×)",
+        "Known operational slag cooling and dumping zone",
+        "Zero rapid temperature excursions observed"
+      ],
+      "timeline": [
+        { "time": "2026-09-06T12:00:00Z", "frp": 13.1 },
+        { "time": "2026-09-06T15:30:00Z", "frp": 14.8 },
+        { "time": "2026-09-06T20:00:00Z", "frp": 13.9 }
       ]
     }
   ]
