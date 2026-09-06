@@ -44,6 +44,15 @@ export const EventMap: React.FC<EventMapProps> = ({
   const [layersOpen, setLayersOpen] = useState(true);
   const [telemetryOpen, setTelemetryOpen] = useState(true);
 
+  // Keep references to latest events and callback for MapLibre event listeners
+  const eventsRef = useRef(events);
+  const onSelectEventRef = useRef(onSelectEvent);
+
+  useEffect(() => {
+    eventsRef.current = events;
+    onSelectEventRef.current = onSelectEvent;
+  }, [events, onSelectEvent]);
+
   // Find currently selected event object
   const selectedEvent = events.find((e) => e.id === selectedEventId) || null;
 
@@ -305,11 +314,47 @@ export const EventMap: React.FC<EventMapProps> = ({
         }
       });
 
-      // ─── Click Events on OSM Facilities ───
+      // ─── Click Events for Sensor Observation Points (Redirects to Details & Condition Teacher) ───
+      mapInstance.on('click', 'thermal-points-layer', (e) => {
+        if (!e.features || !e.features[0]) return;
+        const props = e.features[0].properties as any;
+        const assocId = props.associatedEventId;
+        if (assocId) {
+          const matchedEvent = eventsRef.current.find((ev) => ev.id === assocId);
+          if (matchedEvent) {
+            onSelectEventRef.current(matchedEvent);
+            return;
+          }
+        }
+        // If not directly associated, find closest monitored event cluster
+        const coords = (e.features[0].geometry as any).coordinates;
+        let closest = eventsRef.current[0];
+        let minDist = 999999;
+        eventsRef.current.forEach((ev) => {
+          const dist = Math.hypot(ev.lon - coords[0], ev.lat - coords[1]);
+          if (dist < minDist) {
+            minDist = dist;
+            closest = ev;
+          }
+        });
+        if (closest) {
+          onSelectEventRef.current(closest);
+        }
+      });
+
+      // ─── Click Events on OSM Facilities (Redirects to Details if Linked) ───
       mapInstance.on('click', 'facilities-point-layer', (e) => {
         if (!e.features || !e.features[0]) return;
         const props = e.features[0].properties as any;
         const coords = (e.features[0].geometry as any).coordinates.slice();
+
+        if (props.associatedEventId) {
+          const matched = eventsRef.current.find((ev) => ev.id === props.associatedEventId);
+          if (matched) {
+            onSelectEventRef.current(matched);
+            return;
+          }
+        }
 
         new maplibregl.Popup({ offset: 12 })
           .setLngLat(coords)
@@ -560,12 +605,17 @@ export const EventMap: React.FC<EventMapProps> = ({
       linkSource.setData({ type: 'FeatureCollection', features: [] });
     }
 
-    m.flyTo({
+    // Keep camera stable without 3D pitch drift or extreme zoom-in
+    // Reserve right padding so the dot stays in the visible map area beside the drawer
+    const isWide = typeof window !== 'undefined' && window.innerWidth >= 1024;
+    const rightPadding = isWide ? 460 : 20;
+
+    m.easeTo({
       center: [selected.lon, selected.lat],
-      zoom: selected.facility_distance_km > 5 ? 10.5 : 12.8,
-      pitch: 32,
-      speed: 1.2,
-      curve: 1.4,
+      zoom: Math.max(m.getZoom(), selected.facility_distance_km > 5 ? 7.8 : 9.2),
+      pitch: 0,
+      padding: { top: 60, bottom: 60, left: 60, right: rightPadding },
+      duration: 800,
       essential: true,
     });
   }, [selectedEventId, mapLoaded, events]);

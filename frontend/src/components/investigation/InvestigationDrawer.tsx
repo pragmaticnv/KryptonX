@@ -8,6 +8,7 @@ import { BaselineAnomalyPanel } from './BaselineAnomalyPanel';
 import { PriorityBreakdownPanel } from './PriorityBreakdownPanel';
 import { ContextPanel } from './ContextPanel';
 import { AnalystActionBar } from './AnalystActionBar';
+import { ConditionTeacherPanel } from './ConditionTeacherPanel';
 
 interface InvestigationDrawerProps {
   event: EventDetail | null;
@@ -84,6 +85,9 @@ export const InvestigationDrawer: React.FC<InvestigationDrawerProps> = ({
 
       {/* Scrollable Investigation Body */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        {/* Interactive Condition Diagnostic & AI Teacher */}
+        <ConditionTeacherPanel event={event} />
+
         {/* Why Flagged - Hero Visual Evidence */}
         <EvidenceChips
           evidence={event.evidence}

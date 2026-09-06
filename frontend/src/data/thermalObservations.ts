@@ -60,13 +60,13 @@ export const DEMO_THERMAL_OBSERVATIONS: ThermalObservation[] = [
   // ─── 8. JHARKHAND / COAL & METALLURGICAL CORRIDOR ───
   { id: 'OBS-JMS-01', lon: 86.200, lat: 22.800, frp: 38.0, brightness: 350.2, confidence: 0.90, cluster: 'Jamshedpur Tata Steel Works', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T21:20:00Z' },
   { id: 'OBS-BKR-01', lon: 86.150, lat: 23.660, frp: 32.5, brightness: 345.5, confidence: 0.87, cluster: 'Bokaro Steel City', sensor: 'VIIRS-NOAA20', timestamp: '2026-09-06T19:35:00Z' },
-  { id: 'OBS-DNB-01', lon: 86.420, lat: 23.750, frp: 41.2, brightness: 353.0, confidence: 0.92, cluster: 'Jharia Coalfield Thermal Anomaly', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T20:55:00Z' },
+  { id: 'OBS-DNB-01', lon: 86.420, lat: 23.750, frp: 41.2, brightness: 353.0, confidence: 0.92, cluster: 'Jharia Coalfield Thermal Anomaly', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T20:55:00Z', associatedEventId: 'EVT-1405' },
   { id: 'OBS-RMG-01', lon: 85.510, lat: 23.630, frp: 21.8, brightness: 336.0, confidence: 0.82, cluster: 'Ramgarh Industrial Belt', sensor: 'MODIS', timestamp: '2026-09-06T16:50:00Z' },
 
   // ─── 9. TELANGANA & ANDHRA PRADESH / PHARMA & PORT INDUSTRIAL CLUSTERS ───
   { id: 'OBS-HYD-01', lon: 78.190, lat: 17.530, frp: 16.2, brightness: 330.1, confidence: 0.80, cluster: 'Hyderabad Pashamylaram Pharma', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T18:25:00Z' },
   { id: 'OBS-HYD-02', lon: 78.460, lat: 17.520, frp: 14.8, brightness: 328.5, confidence: 0.78, cluster: 'Jeedimetla Industrial Area', sensor: 'VIIRS-NOAA20', timestamp: '2026-09-06T17:10:00Z' },
-  { id: 'OBS-VZG-01', lon: 83.180, lat: 17.650, frp: 37.4, brightness: 349.8, confidence: 0.89, cluster: 'Visakhapatnam Steel & Port', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T21:05:00Z' },
+  { id: 'OBS-VZG-01', lon: 83.180, lat: 17.650, frp: 37.4, brightness: 349.8, confidence: 0.89, cluster: 'Visakhapatnam Steel & Port', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T21:05:00Z', associatedEventId: 'EVT-2041' },
   { id: 'OBS-KKN-01', lon: 82.240, lat: 16.980, frp: 23.5, brightness: 337.5, confidence: 0.83, cluster: 'Kakinada Fertilizer Hub', sensor: 'MODIS', timestamp: '2026-09-06T16:40:00Z' },
 
   // ─── 10. TAMIL NADU / PETROCHEM, AUTOMOTIVE & COASTAL ENERGY ───
@@ -76,7 +76,7 @@ export const DEMO_THERMAL_OBSERVATIONS: ThermalObservation[] = [
   { id: 'OBS-TUT-01', lon: 78.130, lat: 8.760, frp: 27.0, brightness: 340.5, confidence: 0.84, cluster: 'Tuticorin Port & Smelter', sensor: 'MODIS', timestamp: '2026-09-06T18:30:00Z' },
 
   // ─── 11. PUNJAB & HARYANA / AGRO-INDUSTRIAL & REFINERY BELT ───
-  { id: 'OBS-PNP-01', lon: 76.970, lat: 29.390, frp: 34.0, brightness: 347.0, confidence: 0.88, cluster: 'IOCL Panipat Refinery', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T20:40:00Z' },
+  { id: 'OBS-PNP-01', lon: 76.970, lat: 29.390, frp: 34.0, brightness: 347.0, confidence: 0.88, cluster: 'IOCL Panipat Refinery', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T20:40:00Z', associatedEventId: 'EVT-2219' },
   { id: 'OBS-LDH-01', lon: 75.850, lat: 30.900, frp: 18.4, brightness: 333.0, confidence: 0.81, cluster: 'Ludhiana Industrial Cluster', sensor: 'VIIRS-NOAA20', timestamp: '2026-09-06T18:15:00Z' },
   { id: 'OBS-SNG-01', lon: 75.840, lat: 30.240, frp: 25.1, brightness: 339.5, confidence: 0.83, cluster: 'Sangrur Agricultural Residue', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T16:05:00Z' },
   { id: 'OBS-BTI-01', lon: 74.950, lat: 30.210, frp: 22.8, brightness: 336.8, confidence: 0.82, cluster: 'Bathinda Thermal Complex', sensor: 'MODIS', timestamp: '2026-09-06T15:20:00Z' },
@@ -87,10 +87,13 @@ export const DEMO_THERMAL_OBSERVATIONS: ThermalObservation[] = [
   { id: 'OBS-NMB-01', lon: 74.680, lat: 24.620, frp: 19.2, brightness: 333.2, confidence: 0.81, cluster: 'Nimbahera Cement Corridor', sensor: 'MODIS', timestamp: '2026-09-06T17:00:00Z' },
 
   // ─── 13. MADHYA PRADESH / CENTRAL HEAVY ENERGY HUB ───
-  { id: 'OBS-SNG-02', lon: 82.670, lat: 24.120, frp: 44.5, brightness: 355.2, confidence: 0.92, cluster: 'Singrauli Super Thermal Complex', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T21:15:00Z' },
+  { id: 'OBS-SNG-02', lon: 82.670, lat: 24.120, frp: 44.5, brightness: 355.2, confidence: 0.92, cluster: 'Singrauli Super Thermal Complex', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T21:15:00Z', associatedEventId: 'EVT-3190' },
   { id: 'OBS-PTH-01', lon: 75.690, lat: 22.610, frp: 17.3, brightness: 331.5, confidence: 0.80, cluster: 'Pithampur Heavy Auto Hub', sensor: 'VIIRS-NOAA20', timestamp: '2026-09-06T18:45:00Z' },
 
-  // ─── 14. WEST BENGAL / EASTERN INDUSTRIAL & PORT CORRIDOR ───
+  // ─── 14. KARNATAKA / BELLARY METAL COMPLEX ───
+  { id: 'OBS-BLY-01', lon: 76.650, lat: 15.220, frp: 14.8, brightness: 326.5, confidence: 0.92, cluster: 'JSW Bellary Slag Yard', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T20:00:00Z', associatedEventId: 'EVT-0842' },
+
+  // ─── 15. WEST BENGAL / EASTERN INDUSTRIAL & PORT CORRIDOR ───
   { id: 'OBS-HLD-01', lon: 88.080, lat: 22.030, frp: 31.4, brightness: 344.8, confidence: 0.87, cluster: 'Haldia Petrochem & Refinery', sensor: 'VIIRS-SNPP', timestamp: '2026-09-06T20:35:00Z' },
   { id: 'OBS-DUR-01', lon: 87.310, lat: 23.530, frp: 28.6, brightness: 342.1, confidence: 0.85, cluster: 'Durgapur Steel Hub', sensor: 'VIIRS-NOAA20', timestamp: '2026-09-06T19:05:00Z' },
 ];
